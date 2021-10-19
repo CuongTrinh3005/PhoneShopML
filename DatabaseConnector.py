@@ -46,7 +46,7 @@ class DBConnector:
         return pd.read_sql_query(query_str, self.connection)
 
 # DBConnector.test_connection = classmethod(DBConnector.test_connection)
-connection_str = "Driver={SQL Server};Server={server_name};UID={username};PWD={password};Database={db_name};"
+# connection_str = "Driver={SQL Server};Server={server_name};UID={username};PWD={password};Database={db_name};"
 driver="SQL Server"
 servername = 'QUOC-CUONG'
 username = 'sa'
@@ -74,12 +74,12 @@ else:
 # df_accessories = connector.query(query_str)
 # df_accessories.head()
 # print('All accessories are:\n', df_accessories)
-#
+
 # # Get all column's name
 # table_name="phones"
 # df_all_columns_names = connector.all_columns_name(table_name)
 # print("List of column names of table ", table_name, ":\n", df_all_columns_names)
-#
+
 # # Get all products from a SQL views
 # query_str = "SELECT * FROM dbo.all_products"
 # df_all_products = connector.query(query_str)

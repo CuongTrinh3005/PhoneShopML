@@ -40,7 +40,8 @@ class KNN_Executor:
             distance = self.distance_fn(example[:-1], self.query)
 
             # 3.2 Add the distance and the index of the example to an ordered collection
-            neighbor_distances_and_indices.append((distance, index))
+            if(distance != 0):
+                neighbor_distances_and_indices.append((distance, index))
 
         # 4. Sort the ordered collection of distances and indices from
         # smallest to largest (in ascending order) by the distances

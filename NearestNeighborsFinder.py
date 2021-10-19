@@ -88,8 +88,13 @@ class NearestNeighborsFinder:
         k_nearest_neighbors, _ = knn_model.inference()
         print("Nearest neighbors: ", k_nearest_neighbors, '\n')
         print('Product recommendations:\n')
-        for _, index in k_nearest_neighbors:
-            print(self.list_id_name[index])
 
-finder = NearestNeighborsFinder(query_id='PD081020210007', num_neighbors=5)
-finder.find_nearest_neighbors()
+        recommend_products=[]
+        for _, index in k_nearest_neighbors:
+            # print(self.list_id_name[index])
+            recommend_products.append(self.list_id_name[index])
+
+        return recommend_products
+
+finder = NearestNeighborsFinder(query_id='PD081020210007', num_neighbors=4)
+print(finder.find_nearest_neighbors())

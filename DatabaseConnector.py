@@ -1,6 +1,11 @@
 import pandas as pd
 import pyodbc
 
+# Config pandas dataframe
+pd.set_option('display.max_rows', 500)
+pd.set_option('display.max_columns', 500)
+pd.set_option('display.width', 1000)
+
 
 class DBConnector:
     def __init__(self, server_name, username, password, db_name, connection_str):
@@ -59,23 +64,23 @@ else:
     print('Connect failed!')
 
 # Get all phones
-query_str = "SELECT * FROM dbo.products pr ,phones p WHERE pr.product_id = p.phone_id "
-df_phones = connector.query(query_str)
-df_phones.head()
-print('All phones are:\n', df_phones)
-
-# Get all accessories
-query_str = "SELECT * FROM dbo.products pr ,accessories a WHERE pr.product_id = a.accessory_id "
-df_accessories = connector.query(query_str)
-df_accessories.head()
-print('All accessories are:\n', df_accessories)
-
-# Get all column's name
-table_name="phones"
-df_all_columns_names = connector.all_columns_name(table_name)
-print("List of column names of table ", table_name, ":\n", df_all_columns_names)
-
-# Get all products from a SQL views
-query_str = "SELECT * FROM dbo.all_products"
-df_all_products = connector.query(query_str)
-print("All product list:\n", df_all_products.head())
+# query_str = "SELECT * FROM dbo.products pr ,phones p WHERE pr.product_id = p.phone_id "
+# df_phones = connector.query(query_str)
+# df_phones.head()
+# print('All phones are:\n', df_phones)
+#
+# # Get all accessories
+# query_str = "SELECT * FROM dbo.products pr ,accessories a WHERE pr.product_id = a.accessory_id "
+# df_accessories = connector.query(query_str)
+# df_accessories.head()
+# print('All accessories are:\n', df_accessories)
+#
+# # Get all column's name
+# table_name="phones"
+# df_all_columns_names = connector.all_columns_name(table_name)
+# print("List of column names of table ", table_name, ":\n", df_all_columns_names)
+#
+# # Get all products from a SQL views
+# query_str = "SELECT * FROM dbo.all_products"
+# df_all_products = connector.query(query_str)
+# print("All product list:\n", df_all_products.head())

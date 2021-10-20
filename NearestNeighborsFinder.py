@@ -51,7 +51,7 @@ class NearestNeighborsFinder:
         """This function converts text fields to numerical data"""
         for feature in list_feature_names:
             # print("Feature: ", feature)
-            list_str = self.data[feature]
+            list_str = df_to_convert[feature]
             list_avg_feature_score = self.get_average_score_TFIDF(list_str)
             df_to_convert[feature] = np.array(list_avg_feature_score)
 

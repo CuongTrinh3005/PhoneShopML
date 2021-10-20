@@ -3,7 +3,9 @@ from flask import request, jsonify
 from flask_cors import CORS
 
 from DatabaseConnector import DBConnector
+from KNN import KNN_Executor
 from NearestNeighborsFinder import NearestNeighborsFinder
+from RatingPredictionKNN import KNN_Rating_Prediction
 
 app = flask.Flask('API dispatcher')
 CORS(app)
@@ -18,6 +20,10 @@ str_for_connection = "Driver={driver};Server={servername};UID={username};PWD={pa
             .format(driver=driver, servername=servername, username=username, password=password, db_name=db_name)
 
 connector = DBConnector(servername, username, password, db_name, str_for_connection)
+
+@app.errorhandler(404)
+def resource_not_found():
+    return "Resource not found", 404
 
 @app.route('/', methods=['GET'])
 def home():
@@ -42,8 +48,21 @@ def find_similar_products():
     recommend_products = finder.find_nearest_neighbors()
     return jsonify(recommend_products)
 
-@app.errorhandler(404)
-def resource_not_found():
-    return "Resource not found", 404
+@app.route('/api/recommend-products/knn', methods=['GET'])
+def recommend_products_for_user_with_knn():
+    query_parameters = request.args
+    user_id = query_parameters.get('userid', None)
+    if user_id is None:
+        return resource_not_found()
+
+    query_str = "SELECT user_id FROM dbo.users WHERE user_id='{id}'".format(id=user_id)
+    df_result = connector.query(query_str)
+    if df_result.empty:
+        return resource_not_found()
+
+    model = KNN_Rating_Prediction(num_neighbors=5, distance_method=KNN_Executor.cal_euclidean_distance)
+    recommend_products = model.make_rating_prediction(user_id)
+
+    return jsonify(recommend_products)
 
 app.run()

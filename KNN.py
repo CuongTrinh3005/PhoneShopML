@@ -30,6 +30,22 @@ class KNN_Executor:
 
         return math.sqrt(sum_squared_distance)
 
+    @classmethod
+    def cal_hassanat_distance(cls, point1, point2):
+        distance = 0
+        for xi, yi in zip(point1, point2):
+            min_xi_yi = min(xi, yi)
+            max_xi_yi = max(xi, yi)
+            if min_xi_yi >= 0:
+                numerator = 1 + min_xi_yi
+                dominator = 1 + max_xi_yi
+            else:
+                numerator = 1 + min_xi_yi + abs(min_xi_yi)
+                dominator = 1 + max_xi_yi + abs(min_xi_yi)
+            distance += 1 - numerator / dominator
+
+        return distance
+
     def inference(self):
         neighbor_distances_and_indices = []
 

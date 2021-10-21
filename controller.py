@@ -44,7 +44,7 @@ def find_similar_products():
     if df_result.empty:
         return resource_not_found()
 
-    finder = NearestNeighborsFinder(query_id=id, num_neighbors=k)
+    finder = NearestNeighborsFinder(query_id=id, num_neighbors=k, distance_method=KNN_Executor.cal_hassanat_distance)
     recommend_products = finder.find_nearest_neighbors()
     return jsonify(recommend_products)
 

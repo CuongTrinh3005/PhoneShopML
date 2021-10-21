@@ -1,7 +1,8 @@
 import numpy as np
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.preprocessing import StandardScaler
 from DatabaseConnector import DBConnector
 from KNN import KNN_Executor
-from sklearn.feature_extraction.text import TfidfVectorizer
 
 
 class KNN_Rating_Prediction:
@@ -97,16 +98,28 @@ class KNN_Rating_Prediction:
 
         # Extract processed data
         df_without_name_and_id = self.data[self.data.columns[2:]]
+        # print("Data: \n", df_without_name_and_id)
         data = df_without_name_and_id.values.tolist()
 
         # get query item
         # query_item = [0, 0, 0, 2000000, 0, 3400, True, 1.2, 4, 32, 2, 120, 2, 1, 720, 1600, 6.4, 6.4, True, True, True, True, False, 12, 1
         #     , 0.7, 0.6, 0.4, 0.16, 0.2]
         query_items = self.get_query_items(userId)
+
+        # scaler = StandardScaler()
+        # data_to_scale = []
+        # for data_item in data:
+        #     data_item = data_item[:-1]
+        #     data_to_scale.append(data_item)
+
+        # data_to_scale = scaler.fit_transform(data_to_scale)
         recommend_products = []
         for index, item in enumerate(query_items):
+            # print('Query length: ', len(item))
+            # item = np.array([item])
+            # item = scaler.transform(item)
             knn_model = KNN_Executor(data=data, query=item, k=self.num_neighbors,
-                                     distance_fn=KNN_Executor.cal_euclidean_distance
+                                     distance_fn=self.distance_method
                                      , choice_fn=KNN_Executor.mean)
             k_nearest_neighbors, rating_predictions = knn_model.inference()
             # Round off rating to nearest 0.5. Ex: 2.3 -> 2.5
@@ -120,6 +133,8 @@ class KNN_Rating_Prediction:
         return recommend_products
 
 
-model = KNN_Rating_Prediction(num_neighbors=5, distance_method=KNN_Executor.cal_euclidean_distance)
+model = KNN_Rating_Prediction(num_neighbors=5, distance_method=KNN_Executor.cal_hassanat_distance)
 print("Recommend products for user:\n")
-print(model.make_rating_prediction('US041020210001'))
+recommend_products = model.make_rating_prediction('US041020210001')
+for product in recommend_products:
+    print(product)

@@ -1,13 +1,15 @@
 from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.preprocessing import StandardScaler
 import numpy as np
 from DatabaseConnector import DBConnector
 from KNN import KNN_Executor
 
 
 class NearestNeighborsFinder:
-    def __init__(self, query_id, num_neighbors):
+    def __init__(self, query_id, num_neighbors, distance_method):
         self.query_id = query_id
         self.num_neighbors = num_neighbors
+        self.distance_method = distance_method
         self.data, self.list_id_name, self.connector = self.get_raw_data()
 
     def get_raw_data(self, driver="SQL Server", servername="QUOC-CUONG", username="sa", password="cuong300599",
@@ -82,8 +84,16 @@ class NearestNeighborsFinder:
 
         # get query item
         query_item = self.get_query_item()
-        knn_model = KNN_Executor(data=data, query=query_item, k=self.num_neighbors,
-                                 distance_fn=KNN_Executor.cal_euclidean_distance
+
+        # Scale features
+        scaler = StandardScaler()
+        data = scaler.fit_transform(data)
+
+        query_item = np.array([query_item])
+        query_item = scaler.transform(query_item)
+
+        knn_model = KNN_Executor(data=data, query=query_item.flatten(), k=self.num_neighbors,
+                                 distance_fn=self.distance_method
                                  , choice_fn=lambda x: None)
         k_nearest_neighbors, _ = knn_model.inference()
         print("Nearest neighbors: ", k_nearest_neighbors, '\n')
@@ -96,5 +106,8 @@ class NearestNeighborsFinder:
 
         return recommend_products
 
-finder = NearestNeighborsFinder(query_id='PD081020210007', num_neighbors=4)
-print(finder.find_nearest_neighbors())
+finder = NearestNeighborsFinder(query_id='PD081020210007', num_neighbors=5, distance_method=KNN_Executor.cal_euclidean_distance)
+print("Recommend similar products for user:\n")
+recommend_products = finder.find_nearest_neighbors()
+for product in recommend_products:
+    print(product)

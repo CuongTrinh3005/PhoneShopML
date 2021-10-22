@@ -69,7 +69,7 @@ class KNN_Rating_Prediction:
         # Get all product's features
         query_str = "select p.product_id, p.product_name, p.unit_price, p.discount, p.battery_power, p.bluetooth, p.clock_speed, p.front_cam, p.in_memory, " \
                     "p.ram, p.refresh_rate, p.n_cores, p.n_sim, p.px_height, p.px_width, p.screen_height, p.screen_width, p.touch_screen, p.wifi, p.support_3g, p.support_4g," \
-                    "p.support_5g, p.warranty, p.label, p.common_coef,p.entertain_coef, p.gaming_coef, p.compatible_devices, p.functions	" \
+                    "p.support_5g, p.warranty, p.common_coef,p.entertain_coef, p.gaming_coef, p.compatible_devices, p.functions, p.type	" \
                     "from dbo.all_products p"
         df_all_products_features = self.connector.query(query_str).fillna(0)
         self.list_id_name = df_all_products_features[['product_id', 'product_name']].values.tolist()
@@ -111,7 +111,7 @@ class KNN_Rating_Prediction:
         # for data_item in data:
         #     data_item = data_item[:-1]
         #     data_to_scale.append(data_item)
-
+        #
         # data_to_scale = scaler.fit_transform(data_to_scale)
         recommend_products = []
         for index, item in enumerate(query_items):
@@ -120,8 +120,8 @@ class KNN_Rating_Prediction:
             # item = scaler.transform(item)
             knn_model = KNN_Executor(data=data, query=item, k=self.num_neighbors,
                                      distance_fn=self.distance_method
-                                     , choice_fn=KNN_Executor.mean)
-            k_nearest_neighbors, rating_predictions = knn_model.inference()
+                                     , choice_fn=KNN_Executor.mean, match_exactly=True)
+            k_nearest_neighbors, rating_predictions = knn_model.inference
             # Round off rating to nearest 0.5. Ex: 2.3 -> 2.5
             rating_round_off = round(rating_predictions * 2) / 2
             if rating_round_off >= rating_criteria_score:

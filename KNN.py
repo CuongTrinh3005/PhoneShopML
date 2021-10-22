@@ -3,12 +3,13 @@ from statistics import mode
 
 
 class KNN_Executor:
-    def __init__(self, data, query, k, distance_fn, choice_fn):
+    def __init__(self, data, query, k, distance_fn, choice_fn, match_exactly=False):
         self.data = data
         self.query = query
         self.k = k
         self.distance_fn = distance_fn
         self.choice_fn = choice_fn
+        self.match_exactly = match_exactly
 
     @classmethod
     def mean(cls, labels):
@@ -46,6 +47,7 @@ class KNN_Executor:
 
         return distance
 
+    @property
     def inference(self):
         neighbor_distances_and_indices = []
 
@@ -56,8 +58,11 @@ class KNN_Executor:
             distance = self.distance_fn(example[:-1], self.query)
 
             # 3.2 Add the distance and the index of the example to an ordered collection
-            if(distance != 0):
+            if self.match_exactly is True:
                 neighbor_distances_and_indices.append((distance, index))
+            else:
+                if distance != 0:
+                    neighbor_distances_and_indices.append((distance, index))
 
         # 4. Sort the ordered collection of distances and indices from
         # smallest to largest (in ascending order) by the distances

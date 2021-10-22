@@ -95,7 +95,7 @@ class NearestNeighborsFinder:
         knn_model = KNN_Executor(data=data, query=query_item.flatten(), k=self.num_neighbors,
                                  distance_fn=self.distance_method
                                  , choice_fn=lambda x: None)
-        k_nearest_neighbors, _ = knn_model.inference()
+        k_nearest_neighbors, _ = knn_model.inference
         print("Nearest neighbors: ", k_nearest_neighbors, '\n')
         print('Product recommendations:\n')
 
@@ -106,7 +106,7 @@ class NearestNeighborsFinder:
 
         return recommend_products
 
-finder = NearestNeighborsFinder(query_id='PD081020210007', num_neighbors=5, distance_method=KNN_Executor.cal_euclidean_distance)
+finder = NearestNeighborsFinder(query_id='PD041020210004', num_neighbors=5, distance_method=KNN_Executor.cal_euclidean_distance)
 print("Recommend similar products for user:\n")
 recommend_products = finder.find_nearest_neighbors()
 for product in recommend_products:

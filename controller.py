@@ -65,4 +65,30 @@ def recommend_products_for_user_with_knn():
 
     return jsonify(recommend_products)
 
+@app.route('/api/recommend-products/based-viewing-history', methods=['GET'])
+def recommend_products_for_user_base_on_history():
+    query_parameters = request.args
+
+    user_id = query_parameters.get('userid', None)
+    k = int(query_parameters.get('k', 5))
+
+    if user_id is None:
+        return resource_not_found()
+
+    query_str = "select product_id from dbo.view_histories where user_id='{id}'".format(id=user_id)
+    df_product_ids = connector.query(query_str)
+    if df_product_ids.empty:
+        return resource_not_found()
+
+    # Flatten a list with nested lists to a single list
+    list_product_ids = sum(df_product_ids.values.tolist(), [])
+    all_recommend_product = []
+    for id in list_product_ids:
+        finder = NearestNeighborsFinder(query_id=id, num_neighbors=k, distance_method=KNN_Executor.cal_hassanat_distance)
+        recommend_products_with_specific_id = finder.find_nearest_neighbors()
+        all_recommend_product.extend(recommend_products_with_specific_id)
+
+    unique_recommend_products = list(set(tuple(sorted(sub)) for sub in all_recommend_product))
+    return jsonify(unique_recommend_products)
+
 app.run()

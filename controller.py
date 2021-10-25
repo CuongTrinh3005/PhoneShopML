@@ -29,12 +29,30 @@ def resource_not_found():
 def home():
     return "Hello World! My name is Trinh Quoc Cuong!!!"
 
+def recommend_similar_accessories(product_id, k):
+    # Find if product has its own exclusive accessories
+    recommend_all_accessories = []
+    query_str = "select accessory_id from dbo.phone_accessories where product_id='{id}'".format(id=product_id)
+    df_result = connector.query(query_str)
+    if df_result.empty is False:
+        list_accessory_ids = df_result.values.tolist()
+        # Flatten a list with nested lists to a single list
+        list_accessory_ids = sum(list_accessory_ids, [])
+
+        for accessory_id in list_accessory_ids:
+            finder = NearestNeighborsFinder(query_id=accessory_id, num_neighbors=k,
+                                            distance_method=KNN_Executor.cal_hassanat_distance)
+            recommend_accessories = finder.find_nearest_neighbors()
+            recommend_all_accessories.extend(recommend_accessories)
+
+    return recommend_all_accessories
+
 @app.route('/api/similar-products', methods=['GET'])
 def find_similar_products():
     query_parameters = request.args
 
     id = query_parameters.get('id', None)
-    k = int(query_parameters.get('k', 5))
+    k = int(query_parameters.get('k', 10))
 
     if id is None:
         return resource_not_found()
@@ -46,11 +64,20 @@ def find_similar_products():
 
     finder = NearestNeighborsFinder(query_id=id, num_neighbors=k, distance_method=KNN_Executor.cal_hassanat_distance)
     recommend_products = finder.find_nearest_neighbors()
-    return jsonify(recommend_products)
+
+    # Recommend related accessories
+    recommend_accessories = recommend_similar_accessories(id, k)
+    print("Number of recommend accessories in detail of product: ", len(recommend_accessories))
+    if len(recommend_accessories) > 0:
+        recommend_products.extend(recommend_accessories)
+
+    unique_recommend_products = list(set(tuple(sorted(sub)) for sub in recommend_products))
+    return jsonify(unique_recommend_products)
 
 @app.route('/api/recommend-products/knn', methods=['GET'])
 def recommend_products_for_user_with_knn():
     query_parameters = request.args
+    k = int(query_parameters.get('k', 5))
     user_id = query_parameters.get('userid', None)
     if user_id is None:
         return resource_not_found()
@@ -60,10 +87,18 @@ def recommend_products_for_user_with_knn():
     if df_result.empty:
         return resource_not_found()
 
-    model = KNN_Rating_Prediction(num_neighbors=5, distance_method=KNN_Executor.cal_euclidean_distance)
+    model = KNN_Rating_Prediction(num_neighbors=5, distance_method=KNN_Executor.cal_hassanat_distance)
     recommend_products = model.make_rating_prediction(user_id)
+    for product in recommend_products:
+        product_id, _ = product
+        # Recommend related accessories
+        recommend_accessories = recommend_similar_accessories(product_id, k)
+        print("Number of recommend accessories of rating prediction: ", len(recommend_accessories))
+        if len(recommend_accessories) > 0:
+            recommend_products.extend(recommend_accessories)
 
-    return jsonify(recommend_products)
+    unique_recommend_products = list(set(tuple(sorted(sub)) for sub in recommend_products))
+    return jsonify(unique_recommend_products)
 
 @app.route('/api/recommend-products/based-viewing-history', methods=['GET'])
 def recommend_products_for_user_base_on_history():
@@ -87,6 +122,12 @@ def recommend_products_for_user_base_on_history():
         finder = NearestNeighborsFinder(query_id=id, num_neighbors=k, distance_method=KNN_Executor.cal_hassanat_distance)
         recommend_products_with_specific_id = finder.find_nearest_neighbors()
         all_recommend_product.extend(recommend_products_with_specific_id)
+
+        # Recommend for related accessories
+        recommend_accessories = recommend_similar_accessories(id, k)
+        print("Number of recommend accessories base on history: ", len(recommend_accessories))
+        if len(recommend_accessories) > 0:
+            all_recommend_product.extend(recommend_accessories)
 
     unique_recommend_products = list(set(tuple(sorted(sub)) for sub in all_recommend_product))
     return jsonify(unique_recommend_products)

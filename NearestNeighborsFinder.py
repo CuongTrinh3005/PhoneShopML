@@ -23,7 +23,7 @@ class NearestNeighborsFinder:
         list_id_with_name = df_all_products[['product_id', 'product_name']].values.tolist()
 
         exclude_cols = ['quantity', 'description', 'image', 'available', 'special', 'view_count', 'brand_id',
-                        'category_id', 'manufacturer_id',
+                        'category_id', 'manufacturer_id', 'common_coef', 'entertain_coef', 'gaming_coef',
                         'created_date', 'updated_date', 'imei_no', 'model', 'other_specification']
         df_features = df_all_products.drop(exclude_cols, axis=1)
         df_features = df_features.fillna(0)

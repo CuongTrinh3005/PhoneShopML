@@ -1,6 +1,10 @@
 import numpy as np
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.preprocessing import StandardScaler
+from sklearn import preprocessing
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score
+
 from DatabaseConnector import DBConnector
 from KNN import KNN_Executor
 
@@ -21,7 +25,7 @@ class KNN_Rating_Prediction:
         query_str = "SELECT * FROM dbo.users_ratings_products"
         df_users_ratings_products = connector.query(query_str)
 
-        exclude_cols = ['product_id', 'product_name', 'gender']
+        exclude_cols = ['product_id', 'product_name', 'gender', 'unit_price', 'discount']
         df_features = df_users_ratings_products.drop(exclude_cols, axis=1)
 
         # Replace nan in age with mean columns
@@ -73,9 +77,9 @@ class KNN_Rating_Prediction:
             user_age = self.mean_age
 
         # Get all product's features
-        query_str = "select p.product_id, p.product_name, p.unit_price, p.discount, p.battery_power, p.bluetooth, p.clock_speed, p.front_cam, p.in_memory, " \
-                    "p.ram, p.refresh_rate, p.n_cores, p.n_sim, p.px_height, p.px_width, p.screen_height, p.screen_width, p.touch_screen, p.wifi, p.support_3g, p.support_4g," \
-                    "p.support_5g, p.warranty, p.compatible_devices, p.functions, p.type	" \
+        query_str = "select p.product_id, p.product_name, p.ram, p.rom, p.battery_power, p.resolution, p.max_core," \
+                    "p.max_speed, p.refresh_rate, p.sim_support, p.networks, p.no_front_cam, p.touch_screen, p.wifi, p.bluetooth," \
+                    "p.label, p.compatible_devices, p.functions, p.warranty " \
                     "from dbo.all_products p"
         df_all_products_features = self.connector.query(query_str).fillna(0)
         self.list_id_name = df_all_products_features[['product_id', 'product_name']].values.tolist()
@@ -114,28 +118,87 @@ class KNN_Rating_Prediction:
         data = df_without_name_and_id.values.tolist()
 
         # get query item
-        # query_item = [0, 0, 0, 2000000, 0, 3400, True, 1.2, 4, 32, 2, 120, 2, 1, 720, 1600, 6.4, 6.4, True, True, True, True, False, 12, 1
-        #     , 0.7, 0.6, 0.4, 0.16, 0.2]
         query_items = self.get_query_items(userId)
-
-        # scaler = StandardScaler()
-        # data_to_scale = []
-        # for data_item in data:
-        #     data_item = data_item[:-1]
-        #     data_to_scale.append(data_item)
-        #
-        # data_to_scale = scaler.fit_transform(data_to_scale)
         recommend_products = []
         for index, item in enumerate(query_items):
-            # print('Query length: ', len(item))
-            # item = np.array([item])
-            # item = scaler.transform(item)
             knn_model = KNN_Executor(data=data, query=item, k=self.num_neighbors,
                                      distance_fn=self.distance_method
                                      , choice_fn=KNN_Executor.mean, match_exactly=True)
-            k_nearest_neighbors, rating_predictions = knn_model.inference
+            k_nearest_neighbors, rating_prediction = knn_model.inference
             # Round off rating to nearest 0.5. Ex: 2.3 -> 2.5
-            rating_round_off = round(rating_predictions * 2) / 2
+            rating_round_off = round(rating_prediction * 2) / 2
+            if rating_round_off >= rating_criteria_score:
+                print("Rating predictions: ", rating_round_off)
+                item_to_recommend = self.list_id_name[index]
+                print(f"Product info: {item_to_recommend}")
+                recommend_products.append(item_to_recommend)
+
+        return recommend_products
+
+    def get_accuracy_with_manual_knn(self, dataset):
+        data_train = []; labels = []
+        for item in dataset:
+            data_point = item[:-1]
+            label = item[-1]
+            data_train.append(data_point)
+            labels.append(label)
+
+        st_x = StandardScaler()
+        scale_data_train = st_x.fit_transform(data_train)
+        scale_data_train = scale_data_train.tolist()
+        for index in range(len(scale_data_train)):
+            scale_data_train[index].append(labels[index])
+
+        x_train, x_test, y_train, y_test = train_test_split(scale_data_train, labels, test_size=0.1, random_state=0)
+
+        predictions = []
+        for index, item in enumerate(x_test):
+            knn_model = KNN_Executor(data=x_train, query=item, k=self.num_neighbors,
+                                     distance_fn=self.distance_method
+                                     , choice_fn=KNN_Executor.mode, match_exactly=True)
+            k_nearest_neighbors, rating_prediction = knn_model.inference
+            predictions.append(rating_prediction)
+
+        accuracy = accuracy_score(y_test, predictions) * 100
+        print(f"Accuracy with manual scaler knn: {accuracy}%")
+
+    def make_rating_prediction_with_scaler(self, userId, rating_criteria_score=3.5):
+        # Preprocessed data
+        self.data = self.preprocess_data(self.data)
+
+        # Extract processed data
+        df_without_name_and_id = self.data[self.data.columns[2:]]
+
+        # Extracting Independent and dependent Variable
+        x = df_without_name_and_id.iloc[:, :-1].values
+        y = df_without_name_and_id.iloc[:, -1].values
+
+        # Use label encoder
+        lab_enc = preprocessing.LabelEncoder()
+        encoded_label = lab_enc.fit_transform(y)
+
+        st_x = StandardScaler()
+        x_train = st_x.fit_transform(x)
+
+        x_train = x_train.tolist()
+        for index in range(len(x_train)):
+            x_train[index].append(encoded_label[index])
+
+        self.get_accuracy_with_manual_knn(x_train)
+
+        query_items = self.get_query_items(userId)
+        scaled_items = st_x.transform(query_items)
+        scaled_items = scaled_items.tolist()
+
+        recommend_products = []
+        for index, item in enumerate(scaled_items):
+            knn_model = KNN_Executor(data=x_train, query=item, k=self.num_neighbors,
+                                     distance_fn=self.distance_method
+                                     , choice_fn=KNN_Executor.mode, match_exactly=True)
+            k_nearest_neighbors, rating_prediction = knn_model.inference
+            prediction=lab_enc.inverse_transform([rating_prediction])
+
+            rating_round_off = round(prediction[0] * 2) / 2
             if rating_round_off >= rating_criteria_score:
                 print("Rating predictions: ", rating_round_off)
                 item_to_recommend = self.list_id_name[index]
@@ -156,46 +219,38 @@ class KNN_Rating_Prediction:
         y = df_without_name_and_id.iloc[:, -1].values
 
         # Use label encoder
-        from sklearn import preprocessing
         lab_enc = preprocessing.LabelEncoder()
         encoded_label = lab_enc.fit_transform(y)
 
         # Splitting the dataset into training and test set.
-        from sklearn.model_selection import train_test_split
         x_train, x_test, y_train, y_test = train_test_split(x, encoded_label, test_size=0.1, random_state=0)
 
         # feature Scaling
-        from sklearn.preprocessing import StandardScaler
         st_x = StandardScaler()
         x_train = st_x.fit_transform(x_train)
         x_test = st_x.transform(x_test)
 
         # Fitting K-NN classifier to the training set
         from sklearn.neighbors import KNeighborsClassifier
-        classifier = KNeighborsClassifier(n_neighbors=5, metric='minkowski', p=2)
+        # classifier = KNeighborsClassifier(n_neighbors=5, metric='minkowski', p=1)
+        classifier = KNeighborsClassifier(n_neighbors=5, metric=lambda a, b: KNN_Executor.cal_hassanat_distance(a, b))
         classifier.fit(x_train, y_train)
 
         # Predicting the test set result
         y_pred = classifier.predict(x_test)
+        print("y prediction: ", lab_enc.inverse_transform(y_pred))
 
         # Creating the Confusion matrix
         from sklearn.metrics import confusion_matrix
-        cm = confusion_matrix(y_test, y_pred)
-        print("Confusion matrix:\n", cm)
+        # cm = confusion_matrix(y_test, y_pred)
+        # print("Confusion matrix:\n", cm)
 
         # Get the accuracy
-        from sklearn.metrics import accuracy_score
         return accuracy_score(y_test, y_pred)
 
 
-model = KNN_Rating_Prediction(num_neighbors=5, distance_method=KNN_Executor.cal_euclidean_distance)
-# print("Raw data: \n", model.get_raw_data())
-# query_items = model.get_query_items('US251020210019')
-# for item in query_items:
-#     print(item)
-# print("Percentage of accuracy is : ", model.get_accuracy_with_data()*100)
-
-recommend_products = model.make_rating_prediction('US191020210011')
+model = KNN_Rating_Prediction(num_neighbors=5, distance_method=KNN_Executor.cal_hassanat_distance)
+recommend_products = model.make_rating_prediction_with_scaler('US251020210018')
 print(f"Recommend {len(recommend_products)} products for user:\n")
 for product in recommend_products:
     print(product)

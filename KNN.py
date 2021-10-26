@@ -22,6 +22,14 @@ class KNN_Executor:
         # return Counter(labels).most_common(1)[0][0]
 
     @classmethod
+    def cal_manhattan_distance(cls, point1, point2):
+        sum_distance = 0
+        for index in range(len(point1)):
+            sum_distance +=abs(point1[index] - point2[index])
+
+        return sum_distance
+
+    @classmethod
     def cal_euclidean_distance(cls, point1, point2):
         sum_squared_distance = 0
         # print("point 1: ", point1, " and its shape: ", len(point1))

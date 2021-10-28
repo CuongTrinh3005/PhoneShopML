@@ -105,7 +105,7 @@ class KNN_Rating_Prediction:
 
         return df_user_rating_products.values.tolist()
 
-    def make_rating_prediction(self, userId, rating_criteria_score=3.5):
+    def make_rating_prediction(self, userId, rating_criteria_score=4.0):
         # Preprocessed data
         self.data = self.preprocess_data(self.data)
 
@@ -133,6 +133,7 @@ class KNN_Rating_Prediction:
                 print(f"Product info: {item_to_recommend}")
                 recommend_products.append(item_to_recommend)
 
+        print("Nummber of recommended products: ", len(recommend_products))
         return recommend_products
 
     def get_accuracy_with_manual_knn(self, dataset):
@@ -160,9 +161,9 @@ class KNN_Rating_Prediction:
             predictions.append(rating_prediction)
 
         accuracy = accuracy_score(y_test, predictions) * 100
-        print(f"Accuracy with manual scaler knn: {accuracy}%")
+        # print(f"Accuracy with manual scaler knn: {accuracy}%")
 
-    def make_rating_prediction_with_scaler(self, userId, rating_criteria_score=3.5):
+    def make_rating_prediction_with_scaler(self, userId, rating_criteria_score=4.0):
         # Preprocessed data
         self.data = self.preprocess_data(self.data)
 
@@ -205,6 +206,7 @@ class KNN_Rating_Prediction:
                 print(f"Product info: {item_to_recommend}")
                 recommend_products.append(item_to_recommend)
 
+        print("Nummber of recommended products with scaling features: ", len(recommend_products))
         return recommend_products
 
     def get_accuracy_with_data(self):
@@ -249,8 +251,10 @@ class KNN_Rating_Prediction:
         return accuracy_score(y_test, y_pred)
 
 
-model = KNN_Rating_Prediction(num_neighbors=5, distance_method=KNN_Executor.cal_hassanat_distance)
-recommend_products = model.make_rating_prediction_with_scaler('US251020210018')
-print(f"Recommend {len(recommend_products)} products for user:\n")
-for product in recommend_products:
-    print(product)
+# model = KNN_Rating_Prediction(num_neighbors=9, distance_method=KNN_Executor.cal_hassanat_distance)
+# print("Accuracy: ", model.get_accuracy_with_data())
+# recommend_products = model.make_rating_prediction_with_scaler('US281020210058')
+# recommend_products = model.make_rating_prediction('US281020210058')
+# print(f"Recommend {len(recommend_products)} products for user:\n")
+# for product in recommend_products:
+#     print(product)

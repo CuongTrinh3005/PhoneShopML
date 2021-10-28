@@ -2,10 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8c550792-441d-4e7b-8cc7-3d704e45fa4b" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/AverageRatingPrediction.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/KNN.py" beforeDir="false" afterPath="$PROJECT_DIR$/KNN.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/NearestNeighborsFinder.py" beforeDir="false" afterPath="$PROJECT_DIR$/NearestNeighborsFinder.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/RatingPredictionKNN.py" beforeDir="false" afterPath="$PROJECT_DIR$/RatingPredictionKNN.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/controller.py" beforeDir="false" afterPath="$PROJECT_DIR$/controller.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/user-rating.csv" beforeDir="false" afterPath="$PROJECT_DIR$/user-rating.csv" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -34,8 +35,8 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
   </component>
-  <component name="RunManager" selected="Python.NearestNeighborsFinder">
-    <configuration name="DatabaseConnector" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="Python.controller">
+    <configuration name="AverageRatingPrediction" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="PhoneShopML" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -47,7 +48,7 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/DatabaseConnector.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/AverageRatingPrediction.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -142,11 +143,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.controller" />
+        <item itemvalue="Python.AverageRatingPrediction" />
         <item itemvalue="Python.NearestNeighborsFinder" />
         <item itemvalue="Python.RatingPredictionKNN" />
-        <item itemvalue="Python.controller" />
         <item itemvalue="Python.KNN" />
-        <item itemvalue="Python.DatabaseConnector" />
       </list>
     </recent_temporary>
   </component>
@@ -164,38 +165,38 @@
     <servers />
   </component>
   <component name="WindowStateProjectService">
-    <state width="1345" height="196" key="GridCell.Tab.0.bottom" timestamp="1635258968942">
+    <state width="1345" height="169" key="GridCell.Tab.0.bottom" timestamp="1635430183755">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1345" height="196" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1635258968942" />
-    <state width="1345" height="196" key="GridCell.Tab.0.center" timestamp="1635258968942">
+    <state width="1345" height="169" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1635430183755" />
+    <state width="1345" height="169" key="GridCell.Tab.0.center" timestamp="1635430183754">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1345" height="196" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1635258968942" />
-    <state width="1345" height="196" key="GridCell.Tab.0.left" timestamp="1635258968942">
+    <state width="1345" height="169" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1635430183754" />
+    <state width="1345" height="169" key="GridCell.Tab.0.left" timestamp="1635430183753">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1345" height="196" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1635258968942" />
-    <state width="1345" height="196" key="GridCell.Tab.0.right" timestamp="1635258968942">
+    <state width="1345" height="169" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1635430183753" />
+    <state width="1345" height="169" key="GridCell.Tab.0.right" timestamp="1635430183754">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1345" height="196" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1635258968942" />
-    <state width="1345" height="223" key="GridCell.Tab.1.bottom" timestamp="1635244545574">
+    <state width="1345" height="169" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1635430183754" />
+    <state width="1345" height="223" key="GridCell.Tab.1.bottom" timestamp="1635259172116">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1345" height="223" key="GridCell.Tab.1.bottom/0.0.1366.728@0.0.1366.728" timestamp="1635244545574" />
-    <state width="1345" height="223" key="GridCell.Tab.1.center" timestamp="1635244545574">
+    <state width="1345" height="223" key="GridCell.Tab.1.bottom/0.0.1366.728@0.0.1366.728" timestamp="1635259172116" />
+    <state width="1345" height="223" key="GridCell.Tab.1.center" timestamp="1635259172116">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1345" height="223" key="GridCell.Tab.1.center/0.0.1366.728@0.0.1366.728" timestamp="1635244545574" />
-    <state width="1345" height="223" key="GridCell.Tab.1.left" timestamp="1635244545574">
+    <state width="1345" height="223" key="GridCell.Tab.1.center/0.0.1366.728@0.0.1366.728" timestamp="1635259172116" />
+    <state width="1345" height="223" key="GridCell.Tab.1.left" timestamp="1635259172116">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1345" height="223" key="GridCell.Tab.1.left/0.0.1366.728@0.0.1366.728" timestamp="1635244545574" />
-    <state width="1345" height="223" key="GridCell.Tab.1.right" timestamp="1635244545574">
+    <state width="1345" height="223" key="GridCell.Tab.1.left/0.0.1366.728@0.0.1366.728" timestamp="1635259172116" />
+    <state width="1345" height="223" key="GridCell.Tab.1.right" timestamp="1635259172116">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1345" height="223" key="GridCell.Tab.1.right/0.0.1366.728@0.0.1366.728" timestamp="1635244545574" />
+    <state width="1345" height="223" key="GridCell.Tab.1.right/0.0.1366.728@0.0.1366.728" timestamp="1635259172116" />
     <state x="184" y="6" key="SettingsEditor" timestamp="1634519758951">
       <screen x="0" y="0" width="1366" height="728" />
     </state>

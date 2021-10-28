@@ -1,7 +1,9 @@
 import flask
 from flask import request, jsonify
 from flask_cors import CORS
+from sklearn.metrics import mean_squared_error
 
+from AverageRatingPrediction import AverageRatingPredicter
 from DatabaseConnector import DBConnector
 from KNN import KNN_Executor
 from NearestNeighborsFinder import NearestNeighborsFinder
@@ -88,16 +90,17 @@ def recommend_products_for_user_with_knn():
         return resource_not_found()
 
     model = KNN_Rating_Prediction(num_neighbors=5, distance_method=KNN_Executor.cal_hassanat_distance)
-    recommend_products = model.make_rating_prediction(user_id)
+    recommend_products = model.make_rating_prediction_with_scaler(user_id)
     for product in recommend_products:
         product_id, _ = product
         # Recommend related accessories
         recommend_accessories = recommend_similar_accessories(product_id, k)
-        print("Number of recommend accessories of rating prediction: ", len(recommend_accessories))
+        # print("Number of recommend accessories of rating prediction: ", len(recommend_accessories))
         if len(recommend_accessories) > 0:
             recommend_products.extend(recommend_accessories)
 
     unique_recommend_products = list(set(tuple(sorted(sub)) for sub in recommend_products))
+    print("Number of recommended products: ", len(unique_recommend_products))
     return jsonify(unique_recommend_products)
 
 @app.route('/api/recommend-products/based-viewing-history', methods=['GET'])
@@ -131,5 +134,85 @@ def recommend_products_for_user_base_on_history():
 
     unique_recommend_products = list(set(tuple(sorted(sub)) for sub in all_recommend_product))
     return jsonify(unique_recommend_products)
+
+@app.route('/api/recommend-products/based-high-rating-history', methods=['GET'])
+def recommend_products_for_user_base_on_rating_history(criteria_score=3.5):
+    query_parameters = request.args
+
+    user_id = query_parameters.get('userid', None)
+    k = int(query_parameters.get('k', 5))
+
+    if user_id is None:
+        return resource_not_found()
+
+    query_str = f"select distinct product_id from ratings where user_id = '{user_id}' and score >= {criteria_score}"
+    df_product_ids = connector.query(query_str)
+    if df_product_ids.empty:
+        return resource_not_found()
+
+    # Flatten a list with nested lists to a single list
+    list_product_ids = sum(df_product_ids.values.tolist(), [])
+    all_recommend_product = []
+    for id in list_product_ids:
+        finder = NearestNeighborsFinder(query_id=id, num_neighbors=k, distance_method=KNN_Executor.cal_hassanat_distance)
+        recommend_products_with_specific_id = finder.find_nearest_neighbors()
+        all_recommend_product.extend(recommend_products_with_specific_id)
+
+        # Recommend for related accessories
+        recommend_accessories = recommend_similar_accessories(id, k)
+        print("Number of recommend accessories base on history: ", len(recommend_accessories))
+        if len(recommend_accessories) > 0:
+            all_recommend_product.extend(recommend_accessories)
+
+    unique_recommend_products = list(set(tuple(sorted(sub)) for sub in all_recommend_product))
+    return jsonify(unique_recommend_products)
+
+@app.route('/api/recommend-products/predict-average-rating', methods=['GET'])
+def predict_average_rating_for_admin():
+    query_parameters = request.args
+
+    product_id = query_parameters.get('productid', None)
+    k = int(query_parameters.get('k', 9))
+
+    if product_id is None:
+        return resource_not_found()
+
+    query_str = f"select distinct product_id from products where product_id = '{product_id}'"
+    df_product = connector.query(query_str)
+    if df_product.empty:
+        return resource_not_found()
+
+    predicter = AverageRatingPredicter(query_id=product_id, num_neighbors=k,
+                                       distance_method=KNN_Executor.cal_manhattan_distance)
+
+    predicted_score, actual_score, recommend_products = predicter.find_nearest_neighbors()
+    unique_recommend_products = list(set(tuple(sorted(sub)) for sub in recommend_products))
+    mse = mean_squared_error([actual_score], [predicted_score])
+
+    info = {'predicted_score': predicted_score, 'actual_score: ': actual_score, 'mse': mse, 'recommended_products': unique_recommend_products}
+    return jsonify(info)
+
+@app.route('/api/recommend-products/predict-average-rating', methods=['POST'])
+def predict_average_rating_with_specification():
+    data = request.json
+    ram = data['ram']
+    rom = data['rom']
+    battery_power = data['battery_power']
+    resolution = data['resolution']
+    max_core = data['max_core']
+    max_speed = data['max_speed']
+    refresh_rate = data['refresh_rate']
+    sim_support = data['sim_support']
+    networks = data['networks']
+    no_front_cam = data['no_front_cam']
+    touch_screen = data['touch_screen']
+    wifi = data['wifi']
+    bluetooth = data['bluetooth']
+    compatible_devices = data['compatible_devices']
+    functions = data['functions']
+    label  = data['label']
+    warranty = data['warranty']
+
+    return jsonify(data)
 
 app.run()

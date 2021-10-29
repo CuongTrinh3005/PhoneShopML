@@ -106,9 +106,10 @@ class NearestNeighborsFinder:
 
         return recommend_products
 
-# finder = NearestNeighborsFinder(query_id='PD271020210047', num_neighbors=7, distance_method=KNN_Executor.cal_euclidean_distance)
-# print("Raw data: \n", finder.get_raw_data())
-
+# PD271020210047
+# finder = NearestNeighborsFinder(query_id='PD271020210020', num_neighbors=5, distance_method=KNN_Executor.cal_manhattan_distance)
+# # print("Raw data: \n", finder.get_raw_data())
+#
 # print("Recommend similar products for user:\n")
 # recommend_products = finder.find_nearest_neighbors()
 # for product in recommend_products:

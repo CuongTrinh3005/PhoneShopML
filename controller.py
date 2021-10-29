@@ -172,7 +172,7 @@ def predict_average_rating_for_admin():
     query_parameters = request.args
 
     product_id = query_parameters.get('productid', None)
-    k = int(query_parameters.get('k', 9))
+    k = int(query_parameters.get('k', 3))
 
     if product_id is None:
         return resource_not_found()
@@ -183,7 +183,7 @@ def predict_average_rating_for_admin():
         return resource_not_found()
 
     predicter = AverageRatingPredicter(query_id=product_id, num_neighbors=k,
-                                       distance_method=KNN_Executor.cal_manhattan_distance)
+                                       distance_method=KNN_Executor.cal_hassanat_distance)
 
     predicted_score, actual_score, recommend_products = predicter.find_nearest_neighbors()
     unique_recommend_products = list(set(tuple(sorted(sub)) for sub in recommend_products))
@@ -195,24 +195,17 @@ def predict_average_rating_for_admin():
 @app.route('/api/recommend-products/predict-average-rating', methods=['POST'])
 def predict_average_rating_with_specification():
     data = request.json
-    ram = data['ram']
-    rom = data['rom']
-    battery_power = data['battery_power']
-    resolution = data['resolution']
-    max_core = data['max_core']
-    max_speed = data['max_speed']
-    refresh_rate = data['refresh_rate']
-    sim_support = data['sim_support']
-    networks = data['networks']
-    no_front_cam = data['no_front_cam']
-    touch_screen = data['touch_screen']
-    wifi = data['wifi']
-    bluetooth = data['bluetooth']
-    compatible_devices = data['compatible_devices']
-    functions = data['functions']
-    label  = data['label']
-    warranty = data['warranty']
 
-    return jsonify(data)
+    predicter = AverageRatingPredicter(query_id='', num_neighbors=3, distance_method=KNN_Executor.cal_hassanat_distance)
+    predicted_score, actual_score, recommend_products = predicter.find_nearest_neighbors(specification_body=data)
+    unique_recommend_products = list(set(tuple(sorted(sub)) for sub in recommend_products))
+    if actual_score is not None:
+        mse = mean_squared_error([actual_score], [predicted_score])
+        info = {'predicted_score': predicted_score, 'actual_score: ': actual_score, 'mse': mse,
+            'recommended_products': unique_recommend_products}
+    else:
+        info = {'predicted_score': predicted_score, 'recommended_products': unique_recommend_products}
+
+    return jsonify(info)
 
 app.run()

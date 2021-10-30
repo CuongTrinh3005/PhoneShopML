@@ -1,14 +1,15 @@
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.preprocessing import StandardScaler
-from sklearn.metrics import mean_squared_error
 from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score
 import numpy as np
 import pandas as pd
+
 from DatabaseConnector import DBConnector
 from KNN import KNN_Executor
 
 
-class AverageRatingPredicter:
+class ProductClassifier:
     def __init__(self, query_id, num_neighbors, distance_method):
         self.query_id = query_id
         self.num_neighbors = num_neighbors
@@ -22,34 +23,24 @@ class AverageRatingPredicter:
             .format(driver=driver, servername=servername, username=username, password=password, db_name=db_name)
 
         connector = DBConnector(servername, username, password, db_name, str_for_connection)
-        query_str = "SELECT * FROM dbo.average_ratings_view"
+        query_str = "SELECT * FROM dbo.all_products"
         df_all_products = connector.query(query_str)
-        # list_id_with_name = df_all_products[['product_id', 'product_name']].values.tolist()
+        list_id_with_name = df_all_products[['product_id', 'product_name']].values.tolist()
 
-        exclude_cols = ['unit_price', 'discount', 'description', 'specification',  'image', 'available', 'special', 'view_count', 'brand_id',
-                        'category_id', 'manufacturer_id', 'common_coef', 'entertain_coef', 'gaming_coef', 'warranty',
+        exclude_cols = ['quantity', 'description', 'specification', 'image', 'available', 'special', 'view_count',
+                        'brand_id', 'discount', 'warranty',
+                        'category_id', 'manufacturer_id', 'common_coef', 'entertain_coef', 'gaming_coef', 'unit_price',
                         'created_date', 'updated_date', 'imei_no', 'model']
         df_features = df_all_products.drop(exclude_cols, axis=1)
         df_features = df_features.fillna(0)
 
-        query_str = "select p.product_id, p.product_name from dbo.all_products p"
-
-        df_all_products_features = connector.query(query_str).fillna(0)
-        list_id_with_name = df_all_products_features[['product_id', 'product_name']].values.tolist()
+        last_column = df_features.pop('label')
+        df_features.insert(len(df_features.columns), 'label', last_column)
 
         return df_features, list_id_with_name, connector
 
     def get_data(self):
         return self.data
-
-    def get_average_rating_score(self, product_id):
-        query_str = f"select average_rating from dbo.average_ratings_view where product_id='{product_id}'"
-        df_product = self.connector.query(query_str)
-        if df_product.empty is not True:
-            score = df_product['average_rating'][0]
-            return score
-        else:
-            print("Can not find product!")
 
     def get_average_score_TFIDF(self, list_str, vectorizer=None):
         """This function returns an average score for a string after converting to TF-IDF vector"""
@@ -60,7 +51,7 @@ class AverageRatingPredicter:
             vectorizer_Tf = vectorizer.fit_transform(list_feature)
             self.vectorizer = vectorizer
         else:
-            vectorizer_Tf  = vectorizer.transform(list_feature)
+            vectorizer_Tf = vectorizer.transform(list_feature)
 
         dense_matrix = vectorizer_Tf.todense()
 
@@ -119,17 +110,22 @@ class AverageRatingPredicter:
         df_without_name_and_id = self.data[self.data.columns[2:]]
         data = df_without_name_and_id.values.tolist()
 
-        data_train = []; labels = []
+        data_train = [];
+        labels = []
         for item in data:
             data_point = item[:-1]
             label = item[-1]
             data_train.append(data_point)
             labels.append(label)
 
+        # Get the accuracy
+        self.get_accuracy(data)
+
         # get query item
         if self.query_id != '':
             query_item = self.get_query_item()
-        else: query_item = self.get_query_item_with_specification(specification_body)
+        else:
+            query_item = self.get_query_item_with_specification(specification_body)
 
         # Scale features
         scaler = StandardScaler()
@@ -143,48 +139,57 @@ class AverageRatingPredicter:
 
         knn_model = KNN_Executor(data=scale_data, query=query_item.flatten(), k=self.num_neighbors,
                                  distance_fn=self.distance_method
-                                 , choice_fn=KNN_Executor.mean)
-        k_nearest_neighbors, predicted_score = knn_model.inference
-        actual_score = self.get_average_rating_score(self.query_id)
-        if actual_score is not None:
-            print("Nearest neighbors: ", k_nearest_neighbors, '\n')
-            print("Predicted score: ", predicted_score)
-            print("Actual score: ", actual_score)
+                                 , choice_fn=KNN_Executor.mode)
+        k_nearest_neighbors, predicted_label = knn_model.inference
 
-        recommend_products=[]
-        for _, index in k_nearest_neighbors:
-            # print(self.list_id_name[index])
-            recommend_products.append(self.list_id_name[index])
+        return predicted_label
 
-        return predicted_score, actual_score, recommend_products
-
-    def get_mse_on_entire_dataset(self):
-        self.data = self.preprocess_data(self.data)
-        df_without_name_and_id = self.data[self.data.columns[2:]]
-        df_query_items = df_without_name_and_id.drop(['average_rating'], axis=1)
-
-        data = df_without_name_and_id.values.tolist()
+    def get_accuracy(self, dataset):
+        # self.data = self.preprocess_data(self.data)
+        # df_without_name_and_id = self.data[self.data.columns[2:]]
+        # dataset = df_without_name_and_id.values.tolist()
 
         data_train = [];
         labels = []
-        for item in data:
+        for item in dataset:
             data_point = item[:-1]
             label = item[-1]
             data_train.append(data_point)
             labels.append(label)
 
-        query_items = df_query_items.values.tolist()
+        st_x = StandardScaler()
+        scale_data_train = st_x.fit_transform(data_train)
+        scale_data_train = scale_data_train.tolist()
+        for index in range(len(scale_data_train)):
+            scale_data_train[index].append(labels[index])
 
-        predict_scores = []
-        for item in query_items:
-            knn_model = KNN_Executor(data=data, query=item, k=self.num_neighbors,
+        x_train, x_test, y_train, y_test = train_test_split(scale_data_train, labels, test_size=0.1, random_state=0)
+        # Process in training set
+        train_predictions = []
+        for index, item in enumerate(x_train):
+            knn_model = KNN_Executor(data=x_train, query=item, k=self.num_neighbors,
                                      distance_fn=self.distance_method
-                                     , choice_fn=KNN_Executor.mean)
-            k_nearest_neighbors, predicted_score = knn_model.inference
-            predict_scores.append(predicted_score)
+                                     , choice_fn=KNN_Executor.mode, match_exactly=True)
+            k_nearest_neighbors, rating_prediction = knn_model.inference
+            train_predictions.append(rating_prediction)
 
-        mse = mean_squared_error(labels, predict_scores)
-        return mse
+        accuracy = accuracy_score(y_train, train_predictions) * 100
+        print("Accuracy in training set: ", accuracy)
 
-predicter = AverageRatingPredicter(query_id='PD151020210001', num_neighbors=9, distance_method=KNN_Executor.cal_manhattan_distance)
-print("Mean square error in entire dataset: ", predicter.get_mse_on_entire_dataset())
+        # Process in test set
+        test_predictions = []
+        for index, item in enumerate(x_test):
+            knn_model = KNN_Executor(data=x_train, query=item, k=self.num_neighbors,
+                                     distance_fn=self.distance_method
+                                     , choice_fn=KNN_Executor.mode, match_exactly=True)
+            k_nearest_neighbors, rating_prediction = knn_model.inference
+            test_predictions.append(rating_prediction)
+
+        accuracy = accuracy_score(y_test, test_predictions) * 100
+        print("Accuracy in test set: ", accuracy)
+
+
+classifier = ProductClassifier(query_id='PD221020210014', num_neighbors=5,
+                               distance_method=KNN_Executor.cal_manhattan_distance)
+label = classifier.find_nearest_neighbors()
+# print("Predict label: ", label)

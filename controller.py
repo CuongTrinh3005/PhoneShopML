@@ -4,6 +4,7 @@ from flask_cors import CORS
 from sklearn.metrics import mean_squared_error
 
 from AverageRatingPrediction import AverageRatingPredicter
+from Classification import ProductClassifier
 from DatabaseConnector import DBConnector
 from KNN import KNN_Executor
 from NearestNeighborsFinder import NearestNeighborsFinder
@@ -205,6 +206,26 @@ def predict_average_rating_with_specification():
             'recommended_products': unique_recommend_products}
     else:
         info = {'predicted_score': predicted_score, 'recommended_products': unique_recommend_products}
+
+    return jsonify(info)
+
+@app.route('/api/recommend-products/predict-product-type', methods=['POST'])
+def predict_product_type_with_specification():
+    data = request.json
+
+    classifier = ProductClassifier(query_id='', num_neighbors=3, distance_method=KNN_Executor.cal_hassanat_distance)
+    predicted_label = classifier.find_nearest_neighbors(specification_body=data)
+    product_type=''
+    if predicted_label == 0:
+        product_type = 'Accessories'
+    elif predicted_label == 1:
+        product_type = 'Gaming support'
+    elif predicted_label == 2:
+        product_type = 'Entertainment support'
+    elif predicted_label == 3:
+        product_type = 'Common support'
+
+    info = {'predicted_label': predicted_label, 'product_type': product_type}
 
     return jsonify(info)
 

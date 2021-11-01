@@ -6,6 +6,7 @@ from sklearn.metrics import mean_squared_error
 from AverageRatingPrediction import AverageRatingPredicter
 from Classification import ProductClassifier
 from DatabaseConnector import DBConnector
+from FindSimilarUser import NearestUserFinder
 from KNN import KNN_Executor
 from NearestNeighborsFinder import NearestNeighborsFinder
 from RatingPredictionKNN import KNN_Rating_Prediction
@@ -70,7 +71,7 @@ def find_similar_products():
 
     # Recommend related accessories
     recommend_accessories = recommend_similar_accessories(id, k)
-    print("Number of recommend accessories in detail of product: ", len(recommend_accessories))
+    # print("Number of recommend accessories in detail of product: ", len(recommend_accessories))
     if len(recommend_accessories) > 0:
         recommend_products.extend(recommend_accessories)
 
@@ -101,7 +102,28 @@ def recommend_products_for_user_with_knn():
             recommend_products.extend(recommend_accessories)
 
     unique_recommend_products = list(set(tuple(sorted(sub)) for sub in recommend_products))
-    print("Number of recommended products: ", len(unique_recommend_products))
+    # print("Number of recommended products: ", len(unique_recommend_products))
+    return jsonify(unique_recommend_products)
+
+@app.route('/api/recommend-products/based-on-similar-users', methods=['GET'])
+def recommend_products_for_user_based_on_similar_users():
+    query_parameters = request.args
+    k = int(query_parameters.get('k', 5))
+    user_id = query_parameters.get('userid', None)
+    if user_id is None:
+        return resource_not_found()
+
+    query_str = "SELECT user_id FROM dbo.users WHERE user_id='{id}'".format(id=user_id)
+    df_result = connector.query(query_str)
+    if df_result.empty:
+        return resource_not_found()
+
+    finder = NearestUserFinder(query_id=user_id, num_neighbors=7, distance_method=KNN_Executor.cal_manhattan_distance)
+    similar_users = finder.find_nearest_neighbors()
+    recommend_products = finder.get_high_rating_products_fromm_similar_users(similar_users)
+
+    unique_recommend_products = list(set(tuple(sorted(sub)) for sub in recommend_products))
+    # print("Number of recommended products: ", len(unique_recommend_products))
     return jsonify(unique_recommend_products)
 
 @app.route('/api/recommend-products/based-viewing-history', methods=['GET'])
@@ -129,7 +151,7 @@ def recommend_products_for_user_base_on_history():
 
         # Recommend for related accessories
         recommend_accessories = recommend_similar_accessories(id, k)
-        print("Number of recommend accessories base on history: ", len(recommend_accessories))
+        # print("Number of recommend accessories base on history: ", len(recommend_accessories))
         if len(recommend_accessories) > 0:
             all_recommend_product.extend(recommend_accessories)
 
@@ -161,7 +183,7 @@ def recommend_products_for_user_base_on_rating_history(criteria_score=3.5):
 
         # Recommend for related accessories
         recommend_accessories = recommend_similar_accessories(id, k)
-        print("Number of recommend accessories base on history: ", len(recommend_accessories))
+        # print("Number of recommend accessories base on history: ", len(recommend_accessories))
         if len(recommend_accessories) > 0:
             all_recommend_product.extend(recommend_accessories)
 

@@ -186,5 +186,5 @@ class AverageRatingPredicter:
         mse = mean_squared_error(labels, predict_scores)
         return mse
 
-predicter = AverageRatingPredicter(query_id='PD151020210001', num_neighbors=9, distance_method=KNN_Executor.cal_manhattan_distance)
-print("Mean square error in entire dataset: ", predicter.get_mse_on_entire_dataset())
+# predicter = AverageRatingPredicter(query_id='PD151020210001', num_neighbors=9, distance_method=KNN_Executor.cal_manhattan_distance)
+# print("Mean square error in entire dataset: ", predicter.get_mse_on_entire_dataset())

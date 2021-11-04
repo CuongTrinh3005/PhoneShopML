@@ -5,8 +5,12 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/AverageRatingPrediction.py" beforeDir="false" afterPath="$PROJECT_DIR$/AverageRatingPrediction.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Classification.py" beforeDir="false" afterPath="$PROJECT_DIR$/Classification.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FindSimilarUser.py" beforeDir="false" afterPath="$PROJECT_DIR$/FindSimilarUser.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/NearestNeighborsFinder.py" beforeDir="false" afterPath="$PROJECT_DIR$/NearestNeighborsFinder.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RatingPredictionKNN.py" beforeDir="false" afterPath="$PROJECT_DIR$/RatingPredictionKNN.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/controller.py" beforeDir="false" afterPath="$PROJECT_DIR$/controller.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user-rating-number.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/user-rating-number.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user-rating.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/user-rating.csv" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -32,9 +36,15 @@
   </component>
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/data" />
     <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
   </component>
-  <component name="RunManager" selected="Python.controller">
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\PhoneShopML\data" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Python.AverageRatingPrediction">
     <configuration name="AverageRatingPrediction" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="PhoneShopML" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -142,11 +152,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.controller" />
-        <item itemvalue="Python.Classification" />
-        <item itemvalue="Python.NearestNeighborsFinder" />
         <item itemvalue="Python.AverageRatingPrediction" />
+        <item itemvalue="Python.NearestNeighborsFinder" />
+        <item itemvalue="Python.Classification" />
         <item itemvalue="Python.FindSimilarUser" />
+        <item itemvalue="Python.controller" />
       </list>
     </recent_temporary>
   </component>
@@ -168,22 +178,26 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="275" y="25" key="#Inspections/0.0.1366.728@0.0.1366.728" timestamp="1635557720356" />
-    <state width="1345" height="139" key="GridCell.Tab.0.bottom" timestamp="1635774576556">
+    <state x="463" y="109" key="FileChooserDialogImpl" timestamp="1635986324494">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1345" height="139" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1635774576556" />
-    <state width="1345" height="139" key="GridCell.Tab.0.center" timestamp="1635774576556">
+    <state x="463" y="109" key="FileChooserDialogImpl/0.0.1366.728@0.0.1366.728" timestamp="1635986324494" />
+    <state width="1345" height="202" key="GridCell.Tab.0.bottom" timestamp="1635995162511">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1345" height="139" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1635774576556" />
-    <state width="1345" height="139" key="GridCell.Tab.0.left" timestamp="1635774576556">
+    <state width="1345" height="202" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1635995162511" />
+    <state width="1345" height="202" key="GridCell.Tab.0.center" timestamp="1635995162511">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1345" height="139" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1635774576556" />
-    <state width="1345" height="139" key="GridCell.Tab.0.right" timestamp="1635774576556">
+    <state width="1345" height="202" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1635995162511" />
+    <state width="1345" height="202" key="GridCell.Tab.0.left" timestamp="1635995162511">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1345" height="139" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1635774576556" />
+    <state width="1345" height="202" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1635995162511" />
+    <state width="1345" height="202" key="GridCell.Tab.0.right" timestamp="1635995162511">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state width="1345" height="202" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1635995162511" />
     <state width="1345" height="203" key="GridCell.Tab.1.bottom" timestamp="1635500061876">
       <screen x="0" y="0" width="1366" height="728" />
     </state>

@@ -219,7 +219,7 @@ def predict_average_rating_for_admin():
 def predict_average_rating_with_specification():
     data = request.json
 
-    predicter = AverageRatingPredicter(query_id='', num_neighbors=3, distance_method=KNN_Executor.cal_hassanat_distance)
+    predicter = AverageRatingPredicter(query_id='', num_neighbors=11, distance_method=KNN_Executor.cal_hassanat_distance)
     predicted_score, actual_score, recommend_products = predicter.find_nearest_neighbors(specification_body=data)
     unique_recommend_products = list(set(tuple(sorted(sub)) for sub in recommend_products))
     if actual_score is not None:

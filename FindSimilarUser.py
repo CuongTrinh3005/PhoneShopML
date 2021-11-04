@@ -58,7 +58,7 @@ class NearestUserFinder:
                                  distance_fn=self.distance_method
                                  , choice_fn=lambda x: None)
         k_nearest_neighbors, _ = knn_model.inference
-        print("Nearest neighbors: ", k_nearest_neighbors)
+        print("Nearest neighbors: \n", k_nearest_neighbors)
 
         similar_users=[]
         for _, index in k_nearest_neighbors:
@@ -84,8 +84,11 @@ class NearestUserFinder:
 # finder = NearestUserFinder(query_id='US281020210062', num_neighbors=7, distance_method=KNN_Executor.cal_manhattan_distance)
 # print("Raw data: \n", finder.get_raw_data())
 
-# print("Similar users:")
+# print("Similar users:\n")
 # similar_users = finder.find_nearest_neighbors()
+# for user in similar_users:
+#     print(user)
+
 # recommend_products = finder.get_high_rating_products_fromm_similar_users(similar_users)
 # for product in recommend_products:
 #     print(product)

@@ -112,7 +112,7 @@ class KNN_Rating_Prediction:
         # Extract processed data
         df_without_name_and_id = self.data[self.data.columns[2:]]
         # Save to csv
-        df_without_name_and_id.to_csv(r'D:\PhoneShopML\user-rating.csv', index=False)
+        # df_without_name_and_id.to_csv(r'D:\PhoneShopML\data\user-rating.csv', index=False)
 
         # print("Data: \n", df_without_name_and_id)
         data = df_without_name_and_id.values.tolist()

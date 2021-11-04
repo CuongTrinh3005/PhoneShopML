@@ -174,7 +174,7 @@ class ProductClassifier:
             train_predictions.append(rating_prediction)
 
         accuracy = accuracy_score(y_train, train_predictions) * 100
-        print("Accuracy in training set: ", accuracy)
+        print("Accuracy in training set: ", round(accuracy,2))
 
         # Process in test set
         test_predictions = []
@@ -186,10 +186,10 @@ class ProductClassifier:
             test_predictions.append(rating_prediction)
 
         accuracy = accuracy_score(y_test, test_predictions) * 100
-        print("Accuracy in test set: ", accuracy)
+        print("Accuracy in test set: ", round(accuracy,2))
 
 
-# classifier = ProductClassifier(query_id='PD221020210014', num_neighbors=5,
-#                                distance_method=KNN_Executor.cal_manhattan_distance)
-# label = classifier.find_nearest_neighbors()
+classifier = ProductClassifier(query_id='PD221020210014', num_neighbors=3,
+                               distance_method=KNN_Executor.cal_euclidean_distance)
+label = classifier.find_nearest_neighbors()
 # print("Predict label: ", label)

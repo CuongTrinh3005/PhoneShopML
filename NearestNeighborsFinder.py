@@ -80,6 +80,7 @@ class NearestNeighborsFinder:
 
         # Extract processed data
         df_without_name_and_id = self.data[self.data.columns[2:]]
+        df_without_name_and_id.to_csv(r'D:\PhoneShopML\data\products.csv', header=True, index=False, encoding='utf-8-sig')
         data = df_without_name_and_id.values.tolist()
 
         # get query item
@@ -106,10 +107,8 @@ class NearestNeighborsFinder:
         return recommend_products
 
 # PD271020210047
-# finder = NearestNeighborsFinder(query_id='PD271020210020', num_neighbors=5, distance_method=KNN_Executor.cal_manhattan_distance)
-# # print("Raw data: \n", finder.get_raw_data())
-#
-# print("Recommend similar products for user:\n")
-# recommend_products = finder.find_nearest_neighbors()
-# for product in recommend_products:
-#     print(product)
+finder = NearestNeighborsFinder(query_id='PD271020210020', num_neighbors=5, distance_method=KNN_Executor.cal_manhattan_distance)
+print("Recommend similar products for user:")
+recommend_products = finder.find_nearest_neighbors()
+for product in recommend_products:
+    print(product)

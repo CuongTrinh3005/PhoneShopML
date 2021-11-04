@@ -1,7 +1,6 @@
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import mean_squared_error
-from sklearn.model_selection import train_test_split
 import numpy as np
 import pandas as pd
 from DatabaseConnector import DBConnector
@@ -26,7 +25,8 @@ class AverageRatingPredicter:
         df_all_products = connector.query(query_str)
         # list_id_with_name = df_all_products[['product_id', 'product_name']].values.tolist()
 
-        exclude_cols = ['unit_price', 'discount', 'description', 'specification',  'image', 'available', 'special', 'view_count', 'brand_id',
+        exclude_cols = ['unit_price', 'discount', 'description', 'specification', 'image', 'available', 'special',
+                        'view_count', 'brand_id',
                         'category_id', 'manufacturer_id', 'common_coef', 'entertain_coef', 'gaming_coef', 'warranty',
                         'created_date', 'updated_date', 'imei_no', 'model']
         df_features = df_all_products.drop(exclude_cols, axis=1)
@@ -60,7 +60,7 @@ class AverageRatingPredicter:
             vectorizer_Tf = vectorizer.fit_transform(list_feature)
             self.vectorizer = vectorizer
         else:
-            vectorizer_Tf  = vectorizer.transform(list_feature)
+            vectorizer_Tf = vectorizer.transform(list_feature)
 
         dense_matrix = vectorizer_Tf.todense()
 
@@ -117,9 +117,12 @@ class AverageRatingPredicter:
 
         # Extract processed data
         df_without_name_and_id = self.data[self.data.columns[2:]]
+        df_without_name_and_id.to_csv(r'D:\PhoneShopML\data\average-ratings.csv', header=True, index=False,
+                                      encoding='utf-8-sig')
         data = df_without_name_and_id.values.tolist()
 
-        data_train = []; labels = []
+        data_train = [];
+        labels = []
         for item in data:
             data_point = item[:-1]
             label = item[-1]
@@ -129,7 +132,8 @@ class AverageRatingPredicter:
         # get query item
         if self.query_id != '':
             query_item = self.get_query_item()
-        else: query_item = self.get_query_item_with_specification(specification_body)
+        else:
+            query_item = self.get_query_item_with_specification(specification_body)
 
         # Scale features
         scaler = StandardScaler()
@@ -151,7 +155,7 @@ class AverageRatingPredicter:
             print("Predicted score: ", predicted_score)
             print("Actual score: ", actual_score)
 
-        recommend_products=[]
+        recommend_products = []
         for _, index in k_nearest_neighbors:
             # print(self.list_id_name[index])
             recommend_products.append(self.list_id_name[index])
@@ -186,5 +190,7 @@ class AverageRatingPredicter:
         mse = mean_squared_error(labels, predict_scores)
         return mse
 
-# predicter = AverageRatingPredicter(query_id='PD151020210001', num_neighbors=9, distance_method=KNN_Executor.cal_manhattan_distance)
-# print("Mean square error in entire dataset: ", predicter.get_mse_on_entire_dataset())
+
+predicter = AverageRatingPredicter(query_id='PD151020210001', num_neighbors=11,
+                                   distance_method=KNN_Executor.cal_hassanat_distance)
+print("Mean square error in entire dataset: ", predicter.get_mse_on_entire_dataset())

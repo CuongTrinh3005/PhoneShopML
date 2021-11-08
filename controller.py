@@ -1,15 +1,13 @@
 import flask
 from flask import request, jsonify
 from flask_cors import CORS
-from sklearn.metrics import mean_squared_error
 
-from AverageRatingPrediction import AverageRatingPredicter
 from Classification import ProductClassifier
+from CollaborativeFiltering.MatrixFactorizationModel import CFMatrixFactorizer
+from CollaborativeFiltering.MatrixFactorizationOptimalModel import CFMatrixFactorizerOptimal
 from DatabaseConnector import DBConnector
-from FindSimilarUser import NearestUserFinder
 from KNN import KNN_Executor
 from NearestNeighborsFinder import NearestNeighborsFinder
-from RatingPredictionKNN import KNN_Rating_Prediction
 
 app = flask.Flask('API dispatcher')
 CORS(app)
@@ -78,54 +76,6 @@ def find_similar_products():
     unique_recommend_products = list(set(tuple(sorted(sub)) for sub in recommend_products))
     return jsonify(unique_recommend_products)
 
-@app.route('/api/recommend-products/knn', methods=['GET'])
-def recommend_products_for_user_with_knn():
-    query_parameters = request.args
-    k = int(query_parameters.get('k', 5))
-    user_id = query_parameters.get('userid', None)
-    if user_id is None:
-        return resource_not_found()
-
-    query_str = "SELECT user_id FROM dbo.users WHERE user_id='{id}'".format(id=user_id)
-    df_result = connector.query(query_str)
-    if df_result.empty:
-        return resource_not_found()
-
-    model = KNN_Rating_Prediction(num_neighbors=5, distance_method=KNN_Executor.cal_hassanat_distance)
-    recommend_products = model.make_rating_prediction_with_scaler(user_id)
-    for product in recommend_products:
-        product_id, _ = product
-        # Recommend related accessories
-        recommend_accessories = recommend_similar_accessories(product_id, k)
-        # print("Number of recommend accessories of rating prediction: ", len(recommend_accessories))
-        if len(recommend_accessories) > 0:
-            recommend_products.extend(recommend_accessories)
-
-    unique_recommend_products = list(set(tuple(sorted(sub)) for sub in recommend_products))
-    # print("Number of recommended products: ", len(unique_recommend_products))
-    return jsonify(unique_recommend_products)
-
-@app.route('/api/recommend-products/based-on-similar-users', methods=['GET'])
-def recommend_products_for_user_based_on_similar_users():
-    query_parameters = request.args
-    k = int(query_parameters.get('k', 5))
-    user_id = query_parameters.get('userid', None)
-    if user_id is None:
-        return resource_not_found()
-
-    query_str = "SELECT user_id FROM dbo.users WHERE user_id='{id}'".format(id=user_id)
-    df_result = connector.query(query_str)
-    if df_result.empty:
-        return resource_not_found()
-
-    finder = NearestUserFinder(query_id=user_id, num_neighbors=7, distance_method=KNN_Executor.cal_manhattan_distance)
-    similar_users = finder.find_nearest_neighbors()
-    recommend_products = finder.get_high_rating_products_fromm_similar_users(similar_users)
-
-    unique_recommend_products = list(set(tuple(sorted(sub)) for sub in recommend_products))
-    # print("Number of recommended products: ", len(unique_recommend_products))
-    return jsonify(unique_recommend_products)
-
 @app.route('/api/recommend-products/based-viewing-history', methods=['GET'])
 def recommend_products_for_user_base_on_history():
     query_parameters = request.args
@@ -158,8 +108,8 @@ def recommend_products_for_user_base_on_history():
     unique_recommend_products = list(set(tuple(sorted(sub)) for sub in all_recommend_product))
     return jsonify(unique_recommend_products)
 
-@app.route('/api/recommend-products/based-high-rating-history', methods=['GET'])
-def recommend_products_for_user_base_on_rating_history(criteria_score=3.5):
+@app.route('/api/recommend-products/based-purchasing-history', methods=['GET'])
+def recommend_products_for_user_base_on_rating_history():
     query_parameters = request.args
 
     user_id = query_parameters.get('userid', None)
@@ -168,7 +118,7 @@ def recommend_products_for_user_base_on_rating_history(criteria_score=3.5):
     if user_id is None:
         return resource_not_found()
 
-    query_str = f"select distinct product_id from ratings where user_id = '{user_id}' and score >= {criteria_score}"
+    query_str = f"select product_id from order_details od, orders o where od.order_id = o.order_id and user_id = '{user_id}'"
     df_product_ids = connector.query(query_str)
     if df_product_ids.empty:
         return resource_not_found()
@@ -190,46 +140,26 @@ def recommend_products_for_user_base_on_rating_history(criteria_score=3.5):
     unique_recommend_products = list(set(tuple(sorted(sub)) for sub in all_recommend_product))
     return jsonify(unique_recommend_products)
 
-@app.route('/api/recommend-products/predict-average-rating', methods=['GET'])
-def predict_average_rating_for_admin():
+@app.route('/api/recommend-products/cf', methods=['GET'])
+def recommend_by_collaborative_filtering():
     query_parameters = request.args
+    user_id = query_parameters.get('userid', None)
+    top = int(query_parameters.get('top', 10))
+    n_features = int(query_parameters.get('n_features', 3))
+    lambda_var = int(query_parameters.get('lambda', 3))
+    exclude_rated = query_parameters.get('exclude_rated', default=False, type=lambda v: v.lower() == 'true')
+    optimal = query_parameters.get('optimal', default=False, type=lambda v: v.lower() == 'true')
 
-    product_id = query_parameters.get('productid', None)
-    k = int(query_parameters.get('k', 3))
-
-    if product_id is None:
+    if user_id is None:
         return resource_not_found()
 
-    query_str = f"select distinct product_id from products where product_id = '{product_id}'"
-    df_product = connector.query(query_str)
-    if df_product.empty:
-        return resource_not_found()
+    if optimal is True:
+        cf_model = CFMatrixFactorizerOptimal(num_features=n_features, lambda_var=lambda_var, query_user=user_id, n_top=top)
+    else: cf_model = CFMatrixFactorizer(num_features=n_features, lambda_var=lambda_var, query_user=user_id, n_top=top)
 
-    predicter = AverageRatingPredicter(query_id=product_id, num_neighbors=k,
-                                       distance_method=KNN_Executor.cal_hassanat_distance)
+    recommend_products = cf_model.make_prediction_for_user(exclude_rated=exclude_rated)
 
-    predicted_score, actual_score, recommend_products = predicter.find_nearest_neighbors()
-    unique_recommend_products = list(set(tuple(sorted(sub)) for sub in recommend_products))
-    mse = mean_squared_error([actual_score], [predicted_score])
-
-    info = {'predicted_score': predicted_score, 'actual_score: ': actual_score, 'mse': mse, 'recommended_products': unique_recommend_products}
-    return jsonify(info)
-
-@app.route('/api/recommend-products/predict-average-rating', methods=['POST'])
-def predict_average_rating_with_specification():
-    data = request.json
-
-    predicter = AverageRatingPredicter(query_id='', num_neighbors=11, distance_method=KNN_Executor.cal_hassanat_distance)
-    predicted_score, actual_score, recommend_products = predicter.find_nearest_neighbors(specification_body=data)
-    unique_recommend_products = list(set(tuple(sorted(sub)) for sub in recommend_products))
-    if actual_score is not None:
-        mse = mean_squared_error([actual_score], [predicted_score])
-        info = {'predicted_score': predicted_score, 'actual_score: ': actual_score, 'mse': mse,
-            'recommended_products': unique_recommend_products}
-    else:
-        info = {'predicted_score': predicted_score, 'recommended_products': unique_recommend_products}
-
-    return jsonify(info)
+    return jsonify(recommend_products)
 
 @app.route('/api/recommend-products/predict-product-type', methods=['POST'])
 def predict_product_type_with_specification():

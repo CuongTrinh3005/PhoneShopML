@@ -107,8 +107,8 @@ class NearestNeighborsFinder:
         return recommend_products
 
 # PD271020210047
-finder = NearestNeighborsFinder(query_id='PD271020210020', num_neighbors=5, distance_method=KNN_Executor.cal_manhattan_distance)
-print("Recommend similar products for user:")
-recommend_products = finder.find_nearest_neighbors()
-for product in recommend_products:
-    print(product)
+# finder = NearestNeighborsFinder(query_id='PD271020210020', num_neighbors=5, distance_method=KNN_Executor.cal_manhattan_distance)
+# print("Recommend similar products for user:")
+# recommend_products = finder.find_nearest_neighbors()
+# for product in recommend_products:
+#     print(product)

@@ -5,6 +5,7 @@ from flask_cors import CORS
 from Classification import ProductClassifier
 from CollaborativeFiltering.MatrixFactorizationModel import CFMatrixFactorizer
 from CollaborativeFiltering.MatrixFactorizationOptimalModel import CFMatrixFactorizerOptimal
+from DL_Model.Collaborative_Filtering_DL import CF_Model
 from DatabaseConnector import DBConnector
 from KNN import KNN_Executor
 from NearestNeighborsFinder import NearestNeighborsFinder
@@ -157,9 +158,23 @@ def recommend_by_collaborative_filtering():
         cf_model = CFMatrixFactorizerOptimal(num_features=n_features, lambda_var=lambda_var, query_user=user_id, n_top=top)
     else: cf_model = CFMatrixFactorizer(num_features=n_features, lambda_var=lambda_var, query_user=user_id, n_top=top)
 
-    recommend_products = cf_model.make_prediction_for_user(exclude_rated=exclude_rated)
+    recommended_products = cf_model.make_prediction_for_user(exclude_rated=exclude_rated)
 
-    return jsonify(recommend_products)
+    return jsonify(recommended_products)
+
+@app.route('/api/recommend-products/cf-dl', methods=['GET'])
+def recommend_by_collaborative_filtering_deep_learning():
+    query_parameters = request.args
+    user_id = query_parameters.get('userid', None)
+    top = int(query_parameters.get('top', 10))
+
+    if user_id is None:
+        return resource_not_found()
+
+    cf_model = CF_Model()
+    recommended_products = cf_model.make_recommendations(user_id='US281020210063', top_products=top)
+
+    return jsonify(recommended_products)
 
 @app.route('/api/recommend-products/predict-product-type', methods=['POST'])
 def predict_product_type_with_specification():

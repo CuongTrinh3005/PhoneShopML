@@ -189,7 +189,7 @@ class ProductClassifier:
         print("Accuracy in test set: ", round(accuracy,2))
 
 
-classifier = ProductClassifier(query_id='PD221020210014', num_neighbors=3,
-                               distance_method=KNN_Executor.cal_euclidean_distance)
-label = classifier.find_nearest_neighbors()
+# classifier = ProductClassifier(query_id='PD221020210014', num_neighbors=3,
+#                                distance_method=KNN_Executor.cal_euclidean_distance)
+# label = classifier.find_nearest_neighbors()
 # print("Predict label: ", label)

@@ -2,12 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8c550792-441d-4e7b-8cc7-3d704e45fa4b" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/DL_Model/Collaborative_Filtering_DL.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DL_Model/RecommenderNet.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Classification.py" beforeDir="false" afterPath="$PROJECT_DIR$/Classification.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/NearestNeighborsFinder.py" beforeDir="false" afterPath="$PROJECT_DIR$/NearestNeighborsFinder.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controller.py" beforeDir="false" afterPath="$PROJECT_DIR$/controller.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/products.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/products.csv" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -43,7 +41,28 @@
       <recent name="D:\PhoneShopML\data" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.controller">
+  <component name="RunManager" selected="Python.Classification">
+    <configuration name="Classification" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="PhoneShopML" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Classification.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="Collaborative_Filtering_DL" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="PhoneShopML" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -86,7 +105,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="MatrixFactorizationModel" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="NearestNeighborsFinder" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="PhoneShopML" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -98,28 +117,7 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="D:\PhoneShopML\CollaborativeFiltering\MatrixFactorizationModel.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="MatrixFactorizationOptimalModel" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="PhoneShopML" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/CollaborativeFiltering" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/CollaborativeFiltering/MatrixFactorizationOptimalModel.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/NearestNeighborsFinder.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -151,11 +149,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.Classification" />
         <item itemvalue="Python.controller" />
+        <item itemvalue="Python.NearestNeighborsFinder" />
         <item itemvalue="Python.Collaborative_Filtering_DL" />
         <item itemvalue="Python.MatrixFactorizationModel (1)" />
-        <item itemvalue="Python.MatrixFactorizationOptimalModel" />
-        <item itemvalue="Python.MatrixFactorizationModel" />
       </list>
     </recent_temporary>
   </component>
@@ -185,38 +183,38 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="463" y="109" key="FileChooserDialogImpl/0.0.1366.728@0.0.1366.728" timestamp="1636354410478" />
-    <state width="1345" height="197" key="GridCell.Tab.0.bottom" timestamp="1636532699701">
+    <state width="1345" height="185" key="GridCell.Tab.0.bottom" timestamp="1636618525122">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1345" height="197" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1636532699701" />
-    <state width="1345" height="197" key="GridCell.Tab.0.center" timestamp="1636532699700">
+    <state width="1345" height="185" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1636618525122" />
+    <state width="1345" height="185" key="GridCell.Tab.0.center" timestamp="1636618525121">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1345" height="197" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1636532699700" />
-    <state width="1345" height="197" key="GridCell.Tab.0.left" timestamp="1636532699700">
+    <state width="1345" height="185" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1636618525121" />
+    <state width="1345" height="185" key="GridCell.Tab.0.left" timestamp="1636618525121">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1345" height="197" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1636532699700" />
-    <state width="1345" height="197" key="GridCell.Tab.0.right" timestamp="1636532699701">
+    <state width="1345" height="185" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1636618525121" />
+    <state width="1345" height="185" key="GridCell.Tab.0.right" timestamp="1636618525121">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1345" height="197" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1636532699701" />
-    <state width="1345" height="203" key="GridCell.Tab.1.bottom" timestamp="1635500061876">
+    <state width="1345" height="185" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1636618525121" />
+    <state width="1345" height="203" key="GridCell.Tab.1.bottom" timestamp="1636618525115">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1345" height="203" key="GridCell.Tab.1.bottom/0.0.1366.728@0.0.1366.728" timestamp="1635500061876" />
-    <state width="1345" height="203" key="GridCell.Tab.1.center" timestamp="1635500061876">
+    <state width="1345" height="203" key="GridCell.Tab.1.bottom/0.0.1366.728@0.0.1366.728" timestamp="1636618525115" />
+    <state width="1345" height="203" key="GridCell.Tab.1.center" timestamp="1636618525115">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1345" height="203" key="GridCell.Tab.1.center/0.0.1366.728@0.0.1366.728" timestamp="1635500061876" />
-    <state width="1345" height="203" key="GridCell.Tab.1.left" timestamp="1635500061876">
+    <state width="1345" height="203" key="GridCell.Tab.1.center/0.0.1366.728@0.0.1366.728" timestamp="1636618525115" />
+    <state width="1345" height="203" key="GridCell.Tab.1.left" timestamp="1636618525115">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1345" height="203" key="GridCell.Tab.1.left/0.0.1366.728@0.0.1366.728" timestamp="1635500061876" />
-    <state width="1345" height="203" key="GridCell.Tab.1.right" timestamp="1635500061876">
+    <state width="1345" height="203" key="GridCell.Tab.1.left/0.0.1366.728@0.0.1366.728" timestamp="1636618525115" />
+    <state width="1345" height="203" key="GridCell.Tab.1.right" timestamp="1636618525115">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1345" height="203" key="GridCell.Tab.1.right/0.0.1366.728@0.0.1366.728" timestamp="1635500061876" />
+    <state width="1345" height="203" key="GridCell.Tab.1.right/0.0.1366.728@0.0.1366.728" timestamp="1636618525115" />
     <state x="184" y="6" key="SettingsEditor" timestamp="1634519758951">
       <screen x="0" y="0" width="1366" height="728" />
     </state>

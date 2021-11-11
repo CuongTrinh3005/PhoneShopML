@@ -28,8 +28,7 @@ class ProductClassifier:
         list_id_with_name = df_all_products[['product_id', 'product_name']].values.tolist()
 
         exclude_cols = ['quantity', 'description', 'specification', 'image', 'available', 'special', 'view_count',
-                        'brand_id', 'discount', 'warranty',
-                        'category_id', 'manufacturer_id', 'common_coef', 'entertain_coef', 'gaming_coef', 'unit_price',
+                        'brand_id', 'discount', 'warranty', 'category_id', 'manufacturer_id', 'unit_price',
                         'created_date', 'updated_date', 'imei_no', 'model']
         df_features = df_all_products.drop(exclude_cols, axis=1)
         df_features = df_features.fillna(0)
@@ -188,8 +187,8 @@ class ProductClassifier:
         accuracy = accuracy_score(y_test, test_predictions) * 100
         print("Accuracy in test set: ", round(accuracy,2))
 
-
-# classifier = ProductClassifier(query_id='PD221020210014', num_neighbors=3,
-#                                distance_method=KNN_Executor.cal_euclidean_distance)
-# label = classifier.find_nearest_neighbors()
-# print("Predict label: ", label)
+# PD271020210047 PD221020210014 PD271020210020
+classifier = ProductClassifier(query_id='PD271020210047', num_neighbors=3,
+                               distance_method=KNN_Executor.cal_euclidean_distance)
+label = classifier.find_nearest_neighbors()
+print("Predict label: ", label)

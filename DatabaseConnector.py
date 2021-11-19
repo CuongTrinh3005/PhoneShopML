@@ -49,7 +49,7 @@ driver="SQL Server"
 servername = 'QUOC-CUONG'
 username = 'sa'
 password = 'cuong300599'
-db_name = 'OnlinePhoneShopJoin'
+db_name = 'OnlinePhoneShop'
 
 str_for_connection = "Driver={driver};Server={servername};UID={username};PWD={password};Database={db_name};"\
     .format(driver=driver, servername=servername, username=username, password=password, db_name=db_name)

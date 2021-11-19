@@ -37,5 +37,4 @@ class RecommenderNet(keras.Model):
         x = dot_user_product + user_bias + product_bias
         # The sigmoid activation forces the rating to between 0 and 1
 
-        input_shape = inputs.shape
         return tf.nn.sigmoid(x)

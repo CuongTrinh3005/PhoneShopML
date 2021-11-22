@@ -79,6 +79,7 @@ class ProductClassifier:
     def get_query_item(self):
         query_item_df = self.data.loc[self.data['product_id'] == self.query_id]
         query_item_df_without_id_name = query_item_df[query_item_df.columns[2:]]
+        query_item_df_without_id_name = query_item_df_without_id_name.drop('label', axis=1)
         query_item_values = query_item_df_without_id_name.values.tolist()[0]
 
         return query_item_values
@@ -109,7 +110,7 @@ class ProductClassifier:
         df_without_name_and_id = self.data[self.data.columns[2:]]
         data = df_without_name_and_id.values.tolist()
 
-        data_train = [];
+        data_train = []
         labels = []
         for item in data:
             data_point = item[:-1]
@@ -128,7 +129,7 @@ class ProductClassifier:
 
         # Scale features
         scaler = StandardScaler()
-        scale_data = scaler.fit_transform(data)
+        scale_data = scaler.fit_transform(data_train)
         scale_data = scale_data.tolist()
         for index in range(len(scale_data)):
             scale_data[index].append(labels[index])
@@ -188,7 +189,7 @@ class ProductClassifier:
         print("Accuracy in test set: ", round(accuracy,2))
 
 # PD271020210047 PD221020210014 PD271020210020
-classifier = ProductClassifier(query_id='PD271020210047', num_neighbors=3,
-                               distance_method=KNN_Executor.cal_euclidean_distance)
-label = classifier.find_nearest_neighbors()
-print("Predict label: ", label)
+# classifier = ProductClassifier(query_id='PD271020210047', num_neighbors=3,
+#                                distance_method=KNN_Executor.cal_euclidean_distance)
+# label = classifier.find_nearest_neighbors()
+# print("Predict label: ", label)

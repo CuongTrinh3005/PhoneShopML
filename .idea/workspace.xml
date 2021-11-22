@@ -4,15 +4,15 @@
     <list default="true" id="8c550792-441d-4e7b-8cc7-3d704e45fa4b" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Classification.py" beforeDir="false" afterPath="$PROJECT_DIR$/Classification.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CollaborativeFiltering/MatrixFactorizationModel.py" beforeDir="false" afterPath="$PROJECT_DIR$/CollaborativeFiltering/MatrixFactorizationModel.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CollaborativeFiltering/MatrixFactorizationOptimalModel.py" beforeDir="false" afterPath="$PROJECT_DIR$/CollaborativeFiltering/MatrixFactorizationOptimalModel.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DL_Model/Collaborative_Filtering_DL.py" beforeDir="false" afterPath="$PROJECT_DIR$/DL_Model/Collaborative_Filtering_DL.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DL_Model/RecommenderNet.py" beforeDir="false" afterPath="$PROJECT_DIR$/DL_Model/RecommenderNet.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DatabaseConnector.py" beforeDir="false" afterPath="$PROJECT_DIR$/DatabaseConnector.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NearestNeighborsFinder.py" beforeDir="false" afterPath="$PROJECT_DIR$/NearestNeighborsFinder.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controller.py" beforeDir="false" afterPath="$PROJECT_DIR$/controller.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/rating_matrix.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/rating_matrix.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notebooks/.ipynb_checkpoints/Collaborative Filtering - Deep Learning-checkpoint.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/notebooks/.ipynb_checkpoints/Collaborative Filtering - Deep Learning-checkpoint.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notebooks/.ipynb_checkpoints/Collaborative Filtering - Dense Model-checkpoint.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/notebooks/.ipynb_checkpoints/Collaborative Filtering - Dense Model-checkpoint.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notebooks/.ipynb_checkpoints/Collaborative Filtering - Difference in calculation-checkpoint.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/notebooks/.ipynb_checkpoints/Collaborative Filtering - Difference in calculation-checkpoint.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notebooks/.ipynb_checkpoints/Collaborative Filtering-checkpoint.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/notebooks/.ipynb_checkpoints/Collaborative Filtering-checkpoint.ipynb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/notebooks/Collaborative Filtering - Deep Learning.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/notebooks/Collaborative Filtering - Deep Learning.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notebooks/Collaborative Filtering - Dense Model.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/notebooks/Collaborative Filtering - Dense Model.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notebooks/Collaborative Filtering - Difference in calculation.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/notebooks/Collaborative Filtering - Difference in calculation.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notebooks/Collaborative Filtering.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/notebooks/Collaborative Filtering.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notebooks/Preprocess Data.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/notebooks/Preprocess Data.ipynb" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -157,8 +157,8 @@
     <recent_temporary>
       <list>
         <item itemvalue="Python.controller" />
-        <item itemvalue="Python.NearestNeighborsFinder" />
         <item itemvalue="Python.Classification" />
+        <item itemvalue="Python.NearestNeighborsFinder" />
         <item itemvalue="Python.Collaborative_Filtering_DL" />
         <item itemvalue="Python.MatrixFactorizationModel (1)" />
       </list>
@@ -190,22 +190,22 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="463" y="109" key="FileChooserDialogImpl/0.0.1366.728@0.0.1366.728" timestamp="1636354410478" />
-    <state width="1345" height="191" key="GridCell.Tab.0.bottom" timestamp="1637327948704">
+    <state width="1345" height="211" key="GridCell.Tab.0.bottom" timestamp="1637587568879">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1345" height="191" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1637327948704" />
-    <state width="1345" height="191" key="GridCell.Tab.0.center" timestamp="1637327948704">
+    <state width="1345" height="211" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1637587568879" />
+    <state width="1345" height="211" key="GridCell.Tab.0.center" timestamp="1637587568879">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1345" height="191" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1637327948704" />
-    <state width="1345" height="191" key="GridCell.Tab.0.left" timestamp="1637327948704">
+    <state width="1345" height="211" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1637587568879" />
+    <state width="1345" height="211" key="GridCell.Tab.0.left" timestamp="1637587568879">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1345" height="191" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1637327948704" />
-    <state width="1345" height="191" key="GridCell.Tab.0.right" timestamp="1637327948704">
+    <state width="1345" height="211" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1637587568879" />
+    <state width="1345" height="211" key="GridCell.Tab.0.right" timestamp="1637587568879">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1345" height="191" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1637327948704" />
+    <state width="1345" height="211" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1637587568879" />
     <state width="1345" height="203" key="GridCell.Tab.1.bottom" timestamp="1636618525115">
       <screen x="0" y="0" width="1366" height="728" />
     </state>

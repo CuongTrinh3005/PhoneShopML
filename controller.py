@@ -172,7 +172,7 @@ def recommend_by_collaborative_filtering_deep_learning():
         return resource_not_found()
 
     cf_model = CF_Model()
-    recommended_products = cf_model.make_recommendations(user_id='US281020210063', top_products=top)
+    recommended_products = cf_model.make_recommendations(user_id=user_id, top_products=top)
 
     return jsonify(recommended_products)
 

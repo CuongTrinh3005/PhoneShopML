@@ -3,7 +3,10 @@
   <component name="ChangeListManager">
     <list default="true" id="8c550792-441d-4e7b-8cc7-3d704e45fa4b" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controller.py" beforeDir="false" afterPath="$PROJECT_DIR$/controller.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notebooks/.ipynb_checkpoints/Collaborative Filtering - Difference in calculation-checkpoint.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/notebooks/.ipynb_checkpoints/Collaborative Filtering - Difference in calculation-checkpoint.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notebooks/.ipynb_checkpoints/Collaborative Filtering-checkpoint.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/notebooks/.ipynb_checkpoints/Collaborative Filtering-checkpoint.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notebooks/Collaborative Filtering - Difference in calculation.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/notebooks/Collaborative Filtering - Difference in calculation.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notebooks/Collaborative Filtering.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/notebooks/Collaborative Filtering.ipynb" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -148,8 +151,8 @@
     <recent_temporary>
       <list>
         <item itemvalue="Python.controller" />
-        <item itemvalue="Python.Classification" />
         <item itemvalue="Python.NearestNeighborsFinder" />
+        <item itemvalue="Python.Classification" />
         <item itemvalue="Python.Collaborative_Filtering_DL" />
         <item itemvalue="Python.MatrixFactorizationModel (1)" />
       </list>
@@ -181,22 +184,22 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="463" y="109" key="FileChooserDialogImpl/0.0.1366.728@0.0.1366.728" timestamp="1636354410478" />
-    <state width="1345" height="134" key="GridCell.Tab.0.bottom" timestamp="1637591158335">
+    <state width="1345" height="206" key="GridCell.Tab.0.bottom" timestamp="1638869756359">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1345" height="134" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1637591158335" />
-    <state width="1345" height="134" key="GridCell.Tab.0.center" timestamp="1637591158335">
+    <state width="1345" height="206" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1638869756359" />
+    <state width="1345" height="206" key="GridCell.Tab.0.center" timestamp="1638869756359">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1345" height="134" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1637591158335" />
-    <state width="1345" height="134" key="GridCell.Tab.0.left" timestamp="1637591158335">
+    <state width="1345" height="206" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1638869756359" />
+    <state width="1345" height="206" key="GridCell.Tab.0.left" timestamp="1638869756343">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1345" height="134" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1637591158335" />
-    <state width="1345" height="134" key="GridCell.Tab.0.right" timestamp="1637591158335">
+    <state width="1345" height="206" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1638869756343" />
+    <state width="1345" height="206" key="GridCell.Tab.0.right" timestamp="1638869756359">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1345" height="134" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1637591158335" />
+    <state width="1345" height="206" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1638869756359" />
     <state width="1345" height="203" key="GridCell.Tab.1.bottom" timestamp="1636618525115">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
